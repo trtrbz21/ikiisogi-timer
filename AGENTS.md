@@ -99,6 +99,18 @@ See the checklist in `README.md`. Live Activities can reuse the App Group and `S
 
 ## Release notes
 
+### App Store metadata (decided with the owner)
+
+| Locale | Name | Subtitle |
+|---|---|---|
+| Japanese (primary) | 生き急ぎタイマー | 今日の残りは、あと何秒？ |
+| English | Live in a Hurry | Seconds left in your day |
+
+- Fallback English name if taken: `Live in a Hurry: Minutes Left`.
+- Only publish the English store listing together with an English-localized app.
+- Seller name / privacy policy operator: Kazuki Watanabe. Support contact: kazuki.brbr@gmail.com.
+
+
 - Bundle IDs: `com.trtrbz21.IkiisogiTimer` and `com.trtrbz21.IkiisogiTimer.Widget` (still changeable until registered in App Store Connect). The App Group must be registered in the developer portal once a team is set.
 - `DEVELOPMENT_TEAM` is empty until the owner joins the Apple Developer Program.
 - Bump `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION` for each release, in both the app and widget targets (they must match).
