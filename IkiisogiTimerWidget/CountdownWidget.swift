@@ -149,7 +149,7 @@ struct CountdownWidgetView: View {
 
     private var small: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(entry.timer.title)
+            Text(entry.timer.displayTitle)
                 .font(.caption2.weight(.medium))
                 .foregroundStyle(.secondary)
                 .lineLimit(1)
@@ -169,7 +169,7 @@ struct CountdownWidgetView: View {
             ring(lineWidth: 6)
                 .frame(width: 96, height: 96)
             VStack(alignment: .leading, spacing: 2) {
-                Text(entry.timer.title)
+                Text(entry.timer.displayTitle)
                     .font(.caption.weight(.medium))
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
@@ -203,23 +203,29 @@ struct CountdownWidgetView: View {
 
     private var rectangular: some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(entry.timer.title)
+            Text(entry.timer.displayTitle)
                 .font(.caption2.weight(.medium))
                 .foregroundStyle(.secondary)
                 .lineLimit(1)
-            HStack(alignment: .firstTextBaseline, spacing: 4) {
-                Text(entry.isFinished ? "終了" : "あと")
-                    .font(.caption)
-                remaining
-                    .font(.system(size: 22, weight: .medium))
+            Group {
+                if entry.isFinished {
+                    Text("終了")
+                } else {
+                    // One sentence so the word order can change per language ("あと36分" / "36 minutes left").
+                    Text("あと\(Text(.currentDate, format: offsetFormat).font(.system(size: 22, weight: .medium)))")
+                }
             }
+            .font(.caption)
+            .monospacedDigit()
+            .lineLimit(1)
+            .minimumScaleFactor(0.6)
             progressLine
         }
     }
 
     private var inline: some View {
         if entry.isFinished {
-            Text("\(entry.timer.title) 終了")
+            Text("\(entry.timer.displayTitle) 終了")
         } else {
             Text("あと\(Text(.currentDate, format: offsetFormat))")
         }
@@ -233,7 +239,8 @@ struct CountdownWidgetView: View {
     private var remaining: some View {
         Group {
             if entry.isFinished {
-                Text("0\(Text(entry.unit == .seconds ? "秒" : "分"))")
+                // Formatting the deadline against itself yields a localized "0分" / "0 minutes".
+                Text(offsetFormat.format(entry.timer.onceDate))
             } else {
                 Text(.currentDate, format: offsetFormat)
             }

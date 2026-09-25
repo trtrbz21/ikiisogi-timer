@@ -69,7 +69,7 @@ struct CountdownFace: View {
         VStack(spacing: 0) {
             Spacer()
 
-            Text(timer.title)
+            Text(timer.displayTitle)
                 .font(.subheadline.weight(.medium))
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -87,7 +87,7 @@ struct CountdownFace: View {
                             .contentTransition(.numericText(countsDown: true))
                             .lineLimit(1)
                             .minimumScaleFactor(0.3)
-                        Text(reading.unit.label)
+                        Text(reading.unit.shortLabel)
                             .font(.system(size: 28, weight: .light))
                     }
                 }

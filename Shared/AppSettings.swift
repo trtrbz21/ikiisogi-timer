@@ -7,10 +7,16 @@ enum SettingsKey {
     static let appearance = "settings.appearance"
 }
 
-/// Pages hosted with GitHub Pages from `docs/`.
+/// Pages hosted with GitHub Pages from `docs/` (Japanese) and `docs/en/` (English).
 enum AppLinks {
-    static let support = URL(string: "https://trtrbz21.github.io/ikiisogi-timer/")!
-    static let privacyPolicy = URL(string: "https://trtrbz21.github.io/ikiisogi-timer/privacy.html")!
+    private static var base: String {
+        // Match the language the app is actually shown in (respects the per-app language setting).
+        let isJapanese = Bundle.main.preferredLocalizations.first == "ja"
+        return isJapanese ? "https://trtrbz21.github.io/ikiisogi-timer/" : "https://trtrbz21.github.io/ikiisogi-timer/en/"
+    }
+
+    static var support: URL { URL(string: base)! }
+    static var privacyPolicy: URL { URL(string: base + "privacy.html")! }
 }
 
 extension Color {
@@ -48,10 +54,19 @@ enum Appearance: String, CaseIterable {
 }
 
 extension DisplayUnit {
+    /// Used in pickers ("Minutes" in English).
     var label: LocalizedStringKey {
         switch self {
         case .minutes: "分"
         case .seconds: "秒"
+        }
+    }
+
+    /// Used next to the big number ("min" in English).
+    var shortLabel: LocalizedStringResource {
+        switch self {
+        case .minutes: LocalizedStringResource("unit.minutes.short", defaultValue: "分")
+        case .seconds: LocalizedStringResource("unit.seconds.short", defaultValue: "秒")
         }
     }
 }

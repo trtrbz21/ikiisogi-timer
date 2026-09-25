@@ -16,7 +16,7 @@ struct TimerEditView: View {
         NavigationStack {
             Form {
                 Section("タイトル") {
-                    TextField(CountdownTimer.endOfDay.title, text: $draft.title)
+                    TextField(CountdownTimer.defaultTitle, text: $draft.title)
                 }
 
                 Section {
@@ -26,7 +26,7 @@ struct TimerEditView: View {
                     case .once:
                         // Separate rows so the date is not truncated next to the time.
                         DatePicker("締め日", selection: $draft.onceDate, in: Calendar.autoupdatingCurrent.startOfDay(for: .now)..., displayedComponents: .date)
-                        DatePicker("締め時刻", selection: $draft.onceDate, displayedComponents: .hourAndMinute)
+                        DatePicker("時刻", selection: $draft.onceDate, displayedComponents: .hourAndMinute)
                     }
                 } header: {
                     // In the header rather than as a row, so it sits above the card without a separator.
@@ -53,7 +53,7 @@ struct TimerEditView: View {
 
                 Section {
                     Button("初期設定に戻す", role: .destructive) {
-                        draft = CountdownTimer(id: draft.id, title: CountdownTimer.endOfDay.title)
+                        draft = CountdownTimer(id: draft.id, title: "")
                     }
                 }
             }
@@ -99,10 +99,8 @@ struct TimerEditView: View {
 
     private func finalized(_ timer: CountdownTimer) -> CountdownTimer {
         var timer = timer
+        // An empty title keeps the default, which follows the device language.
         timer.title = timer.title.trimmingCharacters(in: .whitespacesAndNewlines)
-        if timer.title.isEmpty {
-            timer.title = CountdownTimer.endOfDay.title
-        }
         // Drop seconds so the countdown lands exactly on the minute the user picked.
         let components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: timer.onceDate)
         timer.onceDate = calendar.date(from: components) ?? timer.onceDate

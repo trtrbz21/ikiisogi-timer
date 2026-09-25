@@ -32,7 +32,7 @@ xcodebuild test -project IkiisogiTimer.xcodeproj -scheme IkiisogiTimer -destinat
 - [ ] ライブアクティビティ／Dynamic Island
 - [ ] 通知・アラーム
 - [ ] 複数タイマー
-- [ ] 多言語対応（英語）
+- [x] 多言語対応（英語）
 - [ ] デザインテーマ
 - [ ] iPad対応、iCloud同期
 - [ ] 広告と広告削除の課金（またはPro版）

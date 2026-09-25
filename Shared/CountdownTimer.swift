@@ -11,6 +11,7 @@ struct CountdownTimer: Codable, Identifiable, Equatable, Sendable {
     }
 
     var id: UUID
+    /// Empty means the user kept the default, shown in the current language via `displayTitle`.
     var title: String
     var repeatMode: Repeat
     var hour: Int
@@ -37,7 +38,11 @@ struct CountdownTimer: Codable, Identifiable, Equatable, Sendable {
         self.configuredAt = configuredAt
     }
 
+    static var defaultTitle: String { String(localized: "今日の終わりまで") }
+
+    var displayTitle: String { title.isEmpty ? Self.defaultTitle : title }
+
     static var endOfDay: CountdownTimer {
-        CountdownTimer(title: String(localized: "今日の終わりまで"))
+        CountdownTimer(title: "")
     }
 }

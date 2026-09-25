@@ -46,19 +46,21 @@ IkiisogiTimer/                 App target
     TimerEditView.swift        Edit title / repeat mode / deadline
     SettingsView.swift         Display unit, keep screen on, theme, links, version
   Assets.xcassets              AppIcon, AccentColor
-  Localizable.xcstrings        String catalog (source language: ja)
+  InfoPlist.xcstrings          Localized home screen name (ja: 生き急ぎタイマー, en: Live in a Hurry)
   PrivacyInfo.xcprivacy        Privacy manifest (UserDefaults reason CA92.1)
 Shared/                        Compiled into BOTH the app and the widget extension
   Countdown.swift              Pure time math: deadline, reading (value + unit), progress
   CountdownTimer.swift         Timer data (daily / once)
   TimerStore.swift             Persistence (JSON in App Group UserDefaults), reloads widgets on save
   AppSettings.swift            @AppStorage keys, Appearance, DisplayUnit labels, AppLinks
+  Localizable.xcstrings        String catalog for app AND widget (source: ja, translations: en)
 IkiisogiTimerWidget/           Widget extension target
   IkiisogiTimerWidgetBundle.swift
   CountdownWidget.swift        Intent (unit: 分/秒), timeline provider, views for all families
 IkiisogiTimerTests/            Swift Testing unit tests
 Config/                        Entitlements and the widget's Info.plist (not compiled)
-docs/                          GitHub Pages: support page and privacy policy
+docs/                          GitHub Pages: support page and privacy policy (ja), docs/en/ (en)
+AppStore/metadata.md           App Store Connect text drafts (ja/en)
 Tools/generate-app-icon.swift  Renders the app icon PNGs
 ```
 
@@ -89,7 +91,10 @@ The Xcode project uses **file-system synchronized groups**: any file added under
 - Put time math in `Countdown` as pure functions that take `now` and `calendar` parameters, and cover it with tests. Views should not compute deadlines themselves.
 - Tests use Swift Testing (`import Testing`, `@Test`, `#expect`), are marked `@MainActor`, and use a fixed `Asia/Tokyo` calendar.
 - `TimerStore` already stores an array of timers so multiple timers can be added without a migration. Keep new fields backward compatible with existing saved JSON (give them defaults or decode them as optional).
-- Write user-facing text as Japanese string literals in `Text(...)` / `String(localized:)` so they land in the string catalog for future localization. Do not build sentences by concatenating strings.
+- Write user-facing text as Japanese string literals in `Text(...)` / `String(localized:)` and add the English translation to `Shared/Localizable.xcstrings`. Do not build sentences by concatenating strings; interpolate instead so word order can change (e.g. `"あと%@"` → `"%@ left"`).
+- To check that every key has a translation, build and compare the keys in `build/**/*.stringsdata` with the catalog (Xcode only syncs the catalog when opened in the IDE).
+- Store an empty `CountdownTimer.title` for the default and show `displayTitle`, so the default title follows the device language.
+- Units next to the big number use `DisplayUnit.shortLabel` ("min"/"sec" in English); pickers use `label` ("Minutes"/"Seconds").
 - Use `.monospacedDigit()` on changing numbers so the layout does not jitter.
 - Design direction is "refined simplicity": system font (SF Pro) in thin or light weights, monochrome (plus the navy theme), generous whitespace, no decorative color. Match what is already there.
 
@@ -103,7 +108,7 @@ See the checklist in `README.md`. Live Activities can reuse the App Group and `S
 
 | Locale | Name | Subtitle |
 |---|---|---|
-| Japanese (primary) | 生き急ぎタイマー | 今日の残りは、あと何秒？ |
+| Japanese (primary) | 生き急ぎタイマー | 今日の残り時間は、あと何秒？ |
 | English | Live in a Hurry | Seconds left in your day |
 
 - Fallback English name if taken: `Live in a Hurry: Minutes Left`.

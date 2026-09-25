@@ -68,6 +68,16 @@ struct CountdownTests {
         #expect(Countdown.progress(for: once, now: date(25, 13, 0), calendar: calendar) == 1)
     }
 
+    @Test func defaultTitleFollowsLanguage() {
+        let timer = CountdownTimer.endOfDay
+        #expect(timer.title.isEmpty)
+        #expect(timer.displayTitle == CountdownTimer.defaultTitle)
+
+        var custom = timer
+        custom.title = "締め切り"
+        #expect(custom.displayTitle == "締め切り")
+    }
+
     @Test func storePersistsTimers() {
         let defaults = UserDefaults(suiteName: #function)!
         defaults.removePersistentDomain(forName: #function)
