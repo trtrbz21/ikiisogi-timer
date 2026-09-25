@@ -70,7 +70,7 @@ The Xcode project uses **file-system synchronized groups**: any file added under
 - The app target defaults to `MainActor` isolation; the widget target does not. Code in `Shared/` must compile under both, so keep it free of UI-only APIs (`UIApplication` etc.).
 - The remaining-time text uses `Text(.currentDate, format: .offset(to:allowedFields:maxFieldCount:sign:))` (iOS 18), which the system updates every second. `[.minute, .second]` with `maxFieldCount: 1` reproduces the app's rules (floor, seconds under one minute). Do not replace it with `Text(timerInterval:)`, which shows `h:mm:ss`.
 - Timeline entries exist only for the ring (every 5 minutes, 6 hours ahead) and for deadline rollovers. The linear progress uses `ProgressView(timerInterval:)` and is live.
-- Per-widget background (自動/白/黒, home screen families only): the content gets a forced `colorScheme`, and the `containerBackground` color is set explicitly because the system draws it outside the content's environment.
+- Per-widget background (自動/白/黒/濃紺, home screen families only): the content gets a forced `colorScheme`, and the `containerBackground` color is set explicitly because the system draws it outside the content's environment.
 - Do not use `ProgressView(...).progressViewStyle(.circular)` for the ring; it renders a thick system gauge. The ring is drawn with `Circle().trim` like the app icon.
 
 ## Behavior rules (decided with the owner — do not change without asking)
@@ -80,7 +80,7 @@ The Xcode project uses **file-system synchronized groups**: any file added under
 - **Daily** timers count to the next occurrence of `hour:minute` strictly after now; at the deadline they roll over to the next day. A deadline after midnight (e.g. 2:00) counts into the next day.
 - **Once** timers count to a specific date and time and stay at "終了 0" after it passes.
 - Time zone always follows the device (`Calendar.autoupdatingCurrent`).
-- Appearance follows iOS by default; the user can force light or dark in Settings.
+- Appearance follows iOS by default; the user can force light, dark, or navy (濃紺, `Color.navy` #0E1A33, dark scheme) in Settings.
 - Data is stored on device only. No accounts, no analytics, no network.
 - v1 has **no ads**. Ads and a remove-ads purchase (or a Pro unlock) come later.
 
@@ -91,7 +91,7 @@ The Xcode project uses **file-system synchronized groups**: any file added under
 - `TimerStore` already stores an array of timers so multiple timers can be added without a migration. Keep new fields backward compatible with existing saved JSON (give them defaults or decode them as optional).
 - Write user-facing text as Japanese string literals in `Text(...)` / `String(localized:)` so they land in the string catalog for future localization. Do not build sentences by concatenating strings.
 - Use `.monospacedDigit()` on changing numbers so the layout does not jitter.
-- Design direction is "refined simplicity": system font (SF Pro) in thin or light weights, monochrome, generous whitespace, no decorative color. Match what is already there.
+- Design direction is "refined simplicity": system font (SF Pro) in thin or light weights, monochrome (plus the navy theme), generous whitespace, no decorative color. Match what is already there.
 
 ## Roadmap
 

@@ -5,6 +5,7 @@ struct HomeView: View {
     @Environment(\.scenePhase) private var scenePhase
     @AppStorage(SettingsKey.displayUnit) private var unit: DisplayUnit = .minutes
     @AppStorage(SettingsKey.keepScreenOn) private var keepScreenOn = false
+    @AppStorage(SettingsKey.appearance) private var appearance: Appearance = .system
 
     @State private var isEditing = false
     @State private var isShowingSettings = false
@@ -24,6 +25,11 @@ struct HomeView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("タイマーを編集", systemImage: "slider.horizontal.3") { isEditing = true }
+                }
+            }
+            .background {
+                if let color = appearance.backgroundColor {
+                    color.ignoresSafeArea()
                 }
             }
             .tint(.primary)

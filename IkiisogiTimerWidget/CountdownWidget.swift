@@ -18,10 +18,11 @@ enum WidgetBackground: String, AppEnum {
     case automatic
     case light
     case dark
+    case navy
 
     static var typeDisplayRepresentation: TypeDisplayRepresentation { "背景" }
     static var caseDisplayRepresentations: [WidgetBackground: DisplayRepresentation] {
-        [.automatic: "自動", .light: "白", .dark: "黒"]
+        [.automatic: "自動", .light: "白", .dark: "黒", .navy: "濃紺"]
     }
 
     var color: Color {
@@ -29,6 +30,7 @@ enum WidgetBackground: String, AppEnum {
         case .automatic: Color(uiColor: .systemBackground)
         case .light: .white
         case .dark: .black
+        case .navy: .navy
         }
     }
 
@@ -37,7 +39,7 @@ enum WidgetBackground: String, AppEnum {
         switch self {
         case .automatic: nil
         case .light: .light
-        case .dark: .dark
+        case .dark, .navy: .dark
         }
     }
 }
