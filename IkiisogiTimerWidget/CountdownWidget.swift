@@ -218,14 +218,15 @@ struct CountdownWidgetView: View {
         .tint(.primary)
     }
 
-    /// The remaining share of the period as an arc, drawn like the app icon.
+    /// The remaining share of the period as an arc, drawn like the app icon:
+    /// it ends at 12 o'clock and shrinks clockwise as time passes.
     private func ring(lineWidth: CGFloat) -> some View {
         let remaining = entry.isFinished ? 0 : 1 - Countdown.progress(for: entry.timer, now: entry.date)
         return ZStack {
             Circle()
                 .stroke(.primary.opacity(0.15), lineWidth: lineWidth)
             Circle()
-                .trim(from: 0, to: remaining)
+                .trim(from: 1 - remaining, to: 1)
                 .stroke(.primary, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
                 .rotationEffect(.degrees(-90))
         }

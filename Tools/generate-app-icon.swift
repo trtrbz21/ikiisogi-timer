@@ -31,8 +31,9 @@ struct RingIcon: View {
             if let background { background }
             Circle()
                 .stroke(track, lineWidth: lineWidth)
+            // The arc ends at 12 o'clock and is eaten away clockwise as time passes.
             Circle()
-                .trim(from: 0, to: remaining)
+                .trim(from: 1 - remaining, to: 1)
                 .stroke(arc, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
                 .rotationEffect(.degrees(-90))
         }
