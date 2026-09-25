@@ -20,26 +20,34 @@ struct TimerEditView: View {
                 }
 
                 Section {
+                    switch draft.repeatMode {
+                    case .daily:
+                        DatePicker("締め時刻", selection: dailyTime, displayedComponents: .hourAndMinute)
+                    case .once:
+                        // Separate rows so the date is not truncated next to the time.
+                        DatePicker("締め日", selection: $draft.onceDate, in: Calendar.autoupdatingCurrent.startOfDay(for: .now)..., displayedComponents: .date)
+                        DatePicker("締め時刻", selection: $draft.onceDate, displayedComponents: .hourAndMinute)
+                    }
+                } header: {
+                    // In the header rather than as a row, so it sits above the card without a separator.
                     Picker("繰り返し", selection: $draft.repeatMode) {
                         Text("毎日").tag(CountdownTimer.Repeat.daily)
                         Text("1回のみ").tag(CountdownTimer.Repeat.once)
                     }
                     .pickerStyle(.segmented)
-                    .listRowBackground(Color.clear)
-                    .listRowInsets(EdgeInsets())
-
-                    switch draft.repeatMode {
-                    case .daily:
-                        DatePicker("締め時刻", selection: dailyTime, displayedComponents: .hourAndMinute)
-                    case .once:
-                        DatePicker("締め日時", selection: $draft.onceDate, in: Date.now..., displayedComponents: [.date, .hourAndMinute])
-                    }
+                    .labelsHidden()
+                    .padding(.bottom, 8)
                 } footer: {
                     switch draft.repeatMode {
                     case .daily:
                         Text("締め時刻を過ぎると、翌日の同じ時刻までのカウントを自動で始めます。")
                     case .once:
-                        Text("締め日時を過ぎるとカウントを終了します。")
+                        if isOnceDateInPast {
+                            Text("締め日時が過去になっています。未来の日時を選んでください。")
+                                .foregroundStyle(.red)
+                        } else {
+                            Text("締め日時を過ぎるとカウントを終了します。")
+                        }
                     }
                 }
 
@@ -60,6 +68,7 @@ struct TimerEditView: View {
                         onSave(finalized(draft))
                         dismiss()
                     }
+                    .disabled(isOnceDateInPast)
                 }
             }
             .onChange(of: draft.repeatMode) { _, mode in
@@ -71,6 +80,10 @@ struct TimerEditView: View {
                 }
             }
         }
+    }
+
+    private var isOnceDateInPast: Bool {
+        draft.repeatMode == .once && finalized(draft).onceDate <= .now
     }
 
     /// Bridges the stored hour/minute to the Date the picker needs.
