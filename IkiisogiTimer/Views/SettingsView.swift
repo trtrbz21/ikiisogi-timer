@@ -31,6 +31,8 @@ struct SettingsView: View {
                 }
 
                 Section("このアプリについて") {
+                    Link("サポート", destination: AppLinks.support)
+                    Link("プライバシーポリシー", destination: AppLinks.privacyPolicy)
                     LabeledContent("バージョン", value: appVersion)
                 }
             }

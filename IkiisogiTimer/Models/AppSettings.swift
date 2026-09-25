@@ -7,6 +7,12 @@ enum SettingsKey {
     static let appearance = "settings.appearance"
 }
 
+/// Pages hosted with GitHub Pages from `docs/`.
+enum AppLinks {
+    static let support = URL(string: "https://trtrbz21.github.io/ikiisogi-timer/")!
+    static let privacyPolicy = URL(string: "https://trtrbz21.github.io/ikiisogi-timer/privacy.html")!
+}
+
 enum Appearance: String, CaseIterable {
     case system
     case light

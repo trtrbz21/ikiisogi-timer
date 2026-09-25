@@ -26,7 +26,7 @@ xcodebuild test -project IkiisogiTimer.xcodeproj -scheme IkiisogiTimer -destinat
 
 ## ロードマップ
 - [x] アプリアイコン（`swift Tools/generate-app-icon.swift` で再生成）
-- [ ] プライバシーポリシーのページ
+- [x] サポート・プライバシーポリシーのページ（`docs/`、GitHub Pages）
 - [ ] ウィジェット（ホーム画面・ロック画面・StandBy）
 - [ ] ライブアクティビティ／Dynamic Island
 - [ ] 通知・アラーム
