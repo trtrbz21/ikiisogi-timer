@@ -14,12 +14,57 @@ enum WidgetUnit: String, AppEnum {
     }
 }
 
+enum WidgetBackground: String, AppEnum {
+    case automatic
+    case light
+    case dark
+
+    static var typeDisplayRepresentation: TypeDisplayRepresentation { "背景" }
+    static var caseDisplayRepresentations: [WidgetBackground: DisplayRepresentation] {
+        [.automatic: "自動", .light: "白", .dark: "黒"]
+    }
+
+    var color: Color {
+        switch self {
+        case .automatic: Color(uiColor: .systemBackground)
+        case .light: .white
+        case .dark: .black
+        }
+    }
+
+    /// `nil` follows the system appearance.
+    var colorScheme: ColorScheme? {
+        switch self {
+        case .automatic: nil
+        case .light: .light
+        case .dark: .dark
+        }
+    }
+}
+
 struct CountdownWidgetIntent: WidgetConfigurationIntent {
     static var title: LocalizedStringResource { "残り時間" }
     static var description: IntentDescription { "締め時刻までの残り時間を表示します。" }
 
     @Parameter(title: "表示単位", default: .minutes)
     var unit: WidgetUnit
+
+    @Parameter(title: "背景", default: .automatic)
+    var background: WidgetBackground
+
+    /// The lock screen draws its own background, so only offer the choice on the home screen.
+    static var parameterSummary: some ParameterSummary {
+        When(widgetFamily: .oneOf, [.systemSmall, .systemMedium]) {
+            Summary {
+                \.$unit
+                \.$background
+            }
+        } otherwise: {
+            Summary {
+                \.$unit
+            }
+        }
+    }
 }
 
 // MARK: - Timeline
@@ -28,6 +73,7 @@ struct CountdownEntry: TimelineEntry {
     let date: Date
     let timer: CountdownTimer
     let unit: WidgetUnit
+    var background: WidgetBackground = .automatic
 
     var deadline: Date { Countdown.deadline(for: timer, now: date) }
     var periodStart: Date { Countdown.periodStart(for: timer, now: date) }
@@ -40,7 +86,7 @@ struct CountdownProvider: AppIntentTimelineProvider {
     }
 
     func snapshot(for configuration: CountdownWidgetIntent, in context: Context) async -> CountdownEntry {
-        CountdownEntry(date: .now, timer: TimerStore().current, unit: configuration.unit)
+        CountdownEntry(date: .now, timer: TimerStore().current, unit: configuration.unit, background: configuration.background)
     }
 
     /// The remaining-time text and the progress line update themselves every second. Entries are
@@ -76,7 +122,7 @@ struct CountdownProvider: AppIntentTimelineProvider {
             policy = timer.onceDate > horizon ? .atEnd : .never
         }
 
-        let entries = dates.sorted().map { CountdownEntry(date: $0, timer: timer, unit: configuration.unit) }
+        let entries = dates.sorted().map { CountdownEntry(date: $0, timer: timer, unit: configuration.unit, background: configuration.background) }
         return Timeline(entries: entries, policy: policy)
     }
 }
@@ -245,14 +291,30 @@ struct CountdownWidgetView: View {
     }
 }
 
+/// Forcing the color scheme flips the text and ring colors to match a fixed background.
+private struct ColorSchemeOverride: ViewModifier {
+    let scheme: ColorScheme?
+
+    func body(content: Content) -> some View {
+        if let scheme {
+            content.environment(\.colorScheme, scheme)
+        } else {
+            content
+        }
+    }
+}
+
 // MARK: - Widget
 
 struct CountdownWidget: Widget {
     var body: some WidgetConfiguration {
         AppIntentConfiguration(kind: "CountdownWidget", intent: CountdownWidgetIntent.self, provider: CountdownProvider()) { entry in
             CountdownWidgetView(entry: entry)
+                .modifier(ColorSchemeOverride(scheme: entry.background.colorScheme))
+                // The system draws the container background outside the content's environment,
+                // so its color has to be chosen explicitly.
                 .containerBackground(for: .widget) {
-                    Color(uiColor: .systemBackground)
+                    entry.background.color
                 }
         }
         .configurationDisplayName("残り時間")
@@ -272,4 +334,5 @@ struct CountdownWidget: Widget {
     CountdownWidget()
 } timeline: {
     CountdownEntry(date: .now, timer: .endOfDay, unit: .minutes)
+    CountdownEntry(date: .now, timer: .endOfDay, unit: .minutes, background: .dark)
 }

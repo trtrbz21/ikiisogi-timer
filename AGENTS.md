@@ -70,6 +70,7 @@ The Xcode project uses **file-system synchronized groups**: any file added under
 - The app target defaults to `MainActor` isolation; the widget target does not. Code in `Shared/` must compile under both, so keep it free of UI-only APIs (`UIApplication` etc.).
 - The remaining-time text uses `Text(.currentDate, format: .offset(to:allowedFields:maxFieldCount:sign:))` (iOS 18), which the system updates every second. `[.minute, .second]` with `maxFieldCount: 1` reproduces the app's rules (floor, seconds under one minute). Do not replace it with `Text(timerInterval:)`, which shows `h:mm:ss`.
 - Timeline entries exist only for the ring (every 5 minutes, 6 hours ahead) and for deadline rollovers. The linear progress uses `ProgressView(timerInterval:)` and is live.
+- Per-widget background (自動/白/黒, home screen families only): the content gets a forced `colorScheme`, and the `containerBackground` color is set explicitly because the system draws it outside the content's environment.
 - Do not use `ProgressView(...).progressViewStyle(.circular)` for the ring; it renders a thick system gauge. The ring is drawn with `Circle().trim` like the app icon.
 
 ## Behavior rules (decided with the owner — do not change without asking)
