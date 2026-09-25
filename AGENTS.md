@@ -92,6 +92,7 @@ The Xcode project uses **file-system synchronized groups**: any file added under
 - Tests use Swift Testing (`import Testing`, `@Test`, `#expect`), are marked `@MainActor`, and use a fixed `Asia/Tokyo` calendar.
 - `TimerStore` already stores an array of timers so multiple timers can be added without a migration. Keep new fields backward compatible with existing saved JSON (give them defaults or decode them as optional).
 - Write user-facing text as Japanese string literals in `Text(...)` / `String(localized:)` and add the English translation to `Shared/Localizable.xcstrings`. Do not build sentences by concatenating strings; interpolate instead so word order can change (e.g. `"あと%@"` → `"%@ left"`).
+- The project's development region is `en`, so languages other than ja/en fall back to English. The string catalog's source language stays `ja`.
 - To check that every key has a translation, build and compare the keys in `build/**/*.stringsdata` with the catalog (Xcode only syncs the catalog when opened in the IDE).
 - Store an empty `CountdownTimer.title` for the default and show `displayTitle`, so the default title follows the device language.
 - Units next to the big number use `DisplayUnit.shortLabel` ("min"/"sec" in English); pickers use `label` ("Minutes"/"Seconds").

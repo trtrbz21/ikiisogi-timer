@@ -209,7 +209,7 @@
 				};
 			};
 			buildConfigurationList = 0A0000000000000000000030 /* Build configuration list for PBXProject "IkiisogiTimer" */;
-			developmentRegion = ja;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				ja,
