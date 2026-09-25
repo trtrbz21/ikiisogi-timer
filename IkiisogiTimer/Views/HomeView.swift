@@ -66,39 +66,38 @@ struct CountdownFace: View {
         let reading = reading
         let progress = Countdown.progress(for: timer, now: now)
 
-        VStack(spacing: 0) {
-            Spacer()
-
-            Text(timer.displayTitle)
-                .font(.subheadline.weight(.medium))
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-
+        ZStack {
+            // The number itself sits at the exact center of the screen;
+            // the title and "あと" hang above it instead of pushing it down.
             Button(action: onToggleUnit) {
-                VStack(spacing: 4) {
-                    Text(reading.isFinished ? "終了" : "あと")
-                        .font(.title3.weight(.light))
-                        .foregroundStyle(.secondary)
-
-                    HStack(alignment: .firstTextBaseline, spacing: 6) {
-                        Text(reading.value, format: .number)
-                            .font(.system(size: 104, weight: .thin))
-                            .monospacedDigit()
-                            .contentTransition(.numericText(countsDown: true))
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.3)
-                        Text(reading.unit.shortLabel)
-                            .font(.system(size: 28, weight: .light))
-                    }
+                HStack(alignment: .firstTextBaseline, spacing: 6) {
+                    Text(reading.value, format: .number)
+                        .font(.system(size: 104, weight: .thin))
+                        .monospacedDigit()
+                        .contentTransition(.numericText(countsDown: true))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.3)
+                    Text(reading.unit.shortLabel)
+                        .font(.system(size: 28, weight: .light))
                 }
                 .frame(maxWidth: .infinity)
                 .contentShape(.rect)
             }
             .buttonStyle(.plain)
-            .padding(.top, 28)
             .accessibilityHint("タップで分と秒の表示を切り替えます")
-
-            Spacer()
+            .overlay(alignment: .top) {
+                VStack(spacing: 28) {
+                    Text(timer.displayTitle)
+                        .font(.subheadline.weight(.medium))
+                        .multilineTextAlignment(.center)
+                    Text(reading.isFinished ? "終了" : "あと")
+                        .font(.title3.weight(.light))
+                }
+                .foregroundStyle(.secondary)
+                .alignmentGuide(.top) { $0[.bottom] + 4 }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .ignoresSafeArea()
 
             VStack(spacing: 10) {
                 ProgressLine(progress: progress)
@@ -112,6 +111,7 @@ struct CountdownFace: View {
                 .foregroundStyle(.secondary)
             }
             .padding(.bottom, 24)
+            .frame(maxHeight: .infinity, alignment: .bottom)
         }
         .padding(.horizontal, 32)
         .animation(.snappy, value: reading)
