@@ -1,16 +1,19 @@
 import Foundation
 import Observation
+import WidgetKit
 
-/// Persists timers on device as JSON in UserDefaults.
-/// Swap `defaults` for an App Group suite when the widget extension is added.
+/// Persists timers on device as JSON in the App Group's UserDefaults,
+/// so the widget extension reads the same timers as the app.
 @Observable
 final class TimerStore {
+    static let appGroupID = "group.com.trtrbz21.IkiisogiTimer"
+
     private(set) var timers: [CountdownTimer]
 
     @ObservationIgnored private let defaults: UserDefaults
     @ObservationIgnored private let key = "timers.v1"
 
-    init(defaults: UserDefaults = .standard) {
+    init(defaults: UserDefaults = UserDefaults(suiteName: TimerStore.appGroupID) ?? .standard) {
         self.defaults = defaults
         if let data = defaults.data(forKey: key),
            let decoded = try? JSONDecoder().decode([CountdownTimer].self, from: data),
@@ -31,6 +34,7 @@ final class TimerStore {
             timers.append(timer)
         }
         persist()
+        WidgetCenter.shared.reloadAllTimelines()
     }
 
     private func persist() {

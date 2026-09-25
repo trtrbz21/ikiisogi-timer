@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0A0000000000000000000015 /* IkiisogiTimerWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0A0000000000000000000008 /* IkiisogiTimerWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		0A0000000000000000000024 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -14,11 +18,34 @@
 			remoteGlobalIDString = 0A0000000000000000000010;
 			remoteInfo = IkiisogiTimer;
 		};
+		0A0000000000000000000017 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0A0000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0A0000000000000000000040;
+			remoteInfo = IkiisogiTimerWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		0A0000000000000000000014 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				0A0000000000000000000015 /* IkiisogiTimerWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0A0000000000000000000004 /* IkiisogiTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IkiisogiTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A0000000000000000000005 /* IkiisogiTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IkiisogiTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0A0000000000000000000008 /* IkiisogiTimerWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = IkiisogiTimerWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		0A000000000000000000000C /* Config */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Config; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -30,6 +57,16 @@
 		0A0000000000000000000007 /* IkiisogiTimerTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = IkiisogiTimerTests;
+			sourceTree = "<group>";
+		};
+		0A0000000000000000000009 /* IkiisogiTimerWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = IkiisogiTimerWidget;
+			sourceTree = "<group>";
+		};
+		0A000000000000000000000A /* Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -49,6 +86,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0A0000000000000000000042 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -56,7 +100,10 @@
 			isa = PBXGroup;
 			children = (
 				0A0000000000000000000006 /* IkiisogiTimer */,
+				0A000000000000000000000A /* Shared */,
+				0A0000000000000000000009 /* IkiisogiTimerWidget */,
 				0A0000000000000000000007 /* IkiisogiTimerTests */,
+				0A000000000000000000000C /* Config */,
 				0A0000000000000000000003 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -66,6 +113,7 @@
 			children = (
 				0A0000000000000000000004 /* IkiisogiTimer.app */,
 				0A0000000000000000000005 /* IkiisogiTimerTests.xctest */,
+				0A0000000000000000000008 /* IkiisogiTimerWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -80,13 +128,16 @@
 				0A0000000000000000000011 /* Sources */,
 				0A0000000000000000000012 /* Frameworks */,
 				0A0000000000000000000013 /* Resources */,
+				0A0000000000000000000014 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				0A0000000000000000000016 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				0A0000000000000000000006 /* IkiisogiTimer */,
+				0A000000000000000000000A /* Shared */,
 			);
 			name = IkiisogiTimer;
 			productName = IkiisogiTimer;
@@ -114,6 +165,27 @@
 			productReference = 0A0000000000000000000005 /* IkiisogiTimerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		0A0000000000000000000040 /* IkiisogiTimerWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0A0000000000000000000039 /* Build configuration list for PBXNativeTarget "IkiisogiTimerWidgetExtension" */;
+			buildPhases = (
+				0A0000000000000000000041 /* Sources */,
+				0A0000000000000000000042 /* Frameworks */,
+				0A0000000000000000000043 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				0A0000000000000000000009 /* IkiisogiTimerWidget */,
+				0A000000000000000000000A /* Shared */,
+			);
+			name = IkiisogiTimerWidgetExtension;
+			productName = IkiisogiTimerWidgetExtension;
+			productReference = 0A0000000000000000000008 /* IkiisogiTimerWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -130,6 +202,9 @@
 					0A0000000000000000000020 = {
 						CreatedOnToolsVersion = 27.0;
 						TestTargetID = 0A0000000000000000000010;
+					};
+					0A0000000000000000000040 = {
+						CreatedOnToolsVersion = 27.0;
 					};
 				};
 			};
@@ -149,6 +224,7 @@
 			targets = (
 				0A0000000000000000000010 /* IkiisogiTimer */,
 				0A0000000000000000000020 /* IkiisogiTimerTests */,
+				0A0000000000000000000040 /* IkiisogiTimerWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -162,6 +238,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		0A0000000000000000000023 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0A0000000000000000000043 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -185,6 +268,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0A0000000000000000000041 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -192,6 +282,11 @@
 			isa = PBXTargetDependency;
 			target = 0A0000000000000000000010 /* IkiisogiTimer */;
 			targetProxy = 0A0000000000000000000024 /* PBXContainerItemProxy */;
+		};
+		0A0000000000000000000016 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0A0000000000000000000040 /* IkiisogiTimerWidgetExtension */;
+			targetProxy = 0A0000000000000000000017 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -251,6 +346,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Config/IkiisogiTimer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -283,6 +379,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Config/IkiisogiTimer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
@@ -346,6 +443,60 @@
 			};
 			name = Release;
 		};
+		0A000000000000000000003A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = Config/IkiisogiTimerWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Config/IkiisogiTimerWidget-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "生き急ぎタイマー";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.trtrbz21.IkiisogiTimer.Widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		0A000000000000000000003B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = Config/IkiisogiTimerWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Config/IkiisogiTimerWidget-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "生き急ぎタイマー";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.trtrbz21.IkiisogiTimer.Widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -372,6 +523,15 @@
 			buildConfigurations = (
 				0A0000000000000000000037 /* Debug */,
 				0A0000000000000000000038 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0A0000000000000000000039 /* Build configuration list for PBXNativeTarget "IkiisogiTimerWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A000000000000000000003A /* Debug */,
+				0A000000000000000000003B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

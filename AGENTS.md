@@ -34,29 +34,43 @@ xcrun simctl install booted build/Build/Products/Debug-iphonesimulator/IkiisogiT
 xcrun simctl launch booted com.trtrbz21.IkiisogiTimer
 ```
 
-Always run the tests after changing anything in `Models/`. For UI changes, launch in the simulator and check both light and dark appearance (`xcrun simctl ui booted appearance dark|light`).
+Always run the tests after changing anything in `Shared/`. For UI changes, launch in the simulator and check both light and dark appearance (`xcrun simctl ui booted appearance dark|light`).
 
 ## Project layout
 
 ```
-IkiisogiTimer/
-  IkiisogiTimerApp.swift     App entry, injects TimerStore, applies appearance setting
-  Models/
-    Countdown.swift          Pure time math: deadline, reading (value + unit), progress
-    CountdownTimer.swift     Timer data (daily / once)
-    TimerStore.swift         Persistence (JSON in UserDefaults)
-    AppSettings.swift        @AppStorage keys, Appearance, DisplayUnit labels
+IkiisogiTimer/                 App target
+  IkiisogiTimerApp.swift       App entry, injects TimerStore, applies appearance setting
   Views/
-    HomeView.swift           Main countdown screen (CountdownFace, ProgressLine)
-    TimerEditView.swift      Edit title / repeat mode / deadline
-    SettingsView.swift       Display unit, keep screen on, theme, version
-  Assets.xcassets            AppIcon, AccentColor
-  Localizable.xcstrings      String catalog (source language: ja)
-  PrivacyInfo.xcprivacy      Privacy manifest (UserDefaults reason CA92.1)
-IkiisogiTimerTests/          Swift Testing unit tests
+    HomeView.swift             Main countdown screen (CountdownFace, ProgressLine)
+    TimerEditView.swift        Edit title / repeat mode / deadline
+    SettingsView.swift         Display unit, keep screen on, theme, links, version
+  Assets.xcassets              AppIcon, AccentColor
+  Localizable.xcstrings        String catalog (source language: ja)
+  PrivacyInfo.xcprivacy        Privacy manifest (UserDefaults reason CA92.1)
+Shared/                        Compiled into BOTH the app and the widget extension
+  Countdown.swift              Pure time math: deadline, reading (value + unit), progress
+  CountdownTimer.swift         Timer data (daily / once)
+  TimerStore.swift             Persistence (JSON in App Group UserDefaults), reloads widgets on save
+  AppSettings.swift            @AppStorage keys, Appearance, DisplayUnit labels, AppLinks
+IkiisogiTimerWidget/           Widget extension target
+  IkiisogiTimerWidgetBundle.swift
+  CountdownWidget.swift        Intent (unit: 分/秒), timeline provider, views for all families
+IkiisogiTimerTests/            Swift Testing unit tests
+Config/                        Entitlements and the widget's Info.plist (not compiled)
+docs/                          GitHub Pages: support page and privacy policy
+Tools/generate-app-icon.swift  Renders the app icon PNGs
 ```
 
-The Xcode project uses **file-system synchronized groups**: any file added under `IkiisogiTimer/` or `IkiisogiTimerTests/` is picked up automatically. Do not add file references to `project.pbxproj` by hand.
+The Xcode project uses **file-system synchronized groups**: any file added under `IkiisogiTimer/`, `Shared/`, `IkiisogiTimerWidget/` or `IkiisogiTimerTests/` is picked up automatically by the owning target(s). Do not add file references to `project.pbxproj` by hand. Code the widget needs must live in `Shared/`.
+
+### Widget notes
+
+- App Group: `group.com.trtrbz21.IkiisogiTimer` (app and widget entitlements in `Config/`). `TimerStore()` uses it by default.
+- The app target defaults to `MainActor` isolation; the widget target does not. Code in `Shared/` must compile under both, so keep it free of UI-only APIs (`UIApplication` etc.).
+- The remaining-time text uses `Text(.currentDate, format: .offset(to:allowedFields:maxFieldCount:sign:))` (iOS 18), which the system updates every second. `[.minute, .second]` with `maxFieldCount: 1` reproduces the app's rules (floor, seconds under one minute). Do not replace it with `Text(timerInterval:)`, which shows `h:mm:ss`.
+- Timeline entries exist only for the ring (every 5 minutes, 6 hours ahead) and for deadline rollovers. The linear progress uses `ProgressView(timerInterval:)` and is live.
+- Do not use `ProgressView(...).progressViewStyle(.circular)` for the ring; it renders a thick system gauge. The ring is drawn with `Circle().trim` like the app icon.
 
 ## Behavior rules (decided with the owner — do not change without asking)
 
@@ -80,10 +94,10 @@ The Xcode project uses **file-system synchronized groups**: any file added under
 
 ## Roadmap
 
-See the checklist in `README.md`. Widgets and Live Activities will need an App Group; when adding them, move `TimerStore` to `UserDefaults(suiteName:)` for that group and share the `Models/` code with the extension.
+See the checklist in `README.md`. Live Activities can reuse the App Group and `Shared/` code the widget already uses.
 
 ## Release notes
 
-- Bundle ID: `com.trtrbz21.IkiisogiTimer` (still changeable until it is registered in App Store Connect).
+- Bundle IDs: `com.trtrbz21.IkiisogiTimer` and `com.trtrbz21.IkiisogiTimer.Widget` (still changeable until registered in App Store Connect). The App Group must be registered in the developer portal once a team is set.
 - `DEVELOPMENT_TEAM` is empty until the owner joins the Apple Developer Program.
-- Bump `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION` in the target build settings for each release.
+- Bump `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION` for each release, in both the app and widget targets (they must match).

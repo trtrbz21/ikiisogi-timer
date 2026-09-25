@@ -9,10 +9,11 @@
 ## 構成
 | パス | 内容 |
 |---|---|
-| `IkiisogiTimer/Models/Countdown.swift` | 残り時間の計算（締め時刻、切り捨て、1分未満で秒表示に切り替え、進捗率） |
-| `IkiisogiTimer/Models/CountdownTimer.swift` | タイマーのデータ（毎日繰り返す／1回のみ） |
-| `IkiisogiTimer/Models/TimerStore.swift` | 端末内への保存（UserDefaults） |
+| `Shared/Countdown.swift` | 残り時間の計算（締め時刻、切り捨て、1分未満で秒表示に切り替え、進捗率） |
+| `Shared/CountdownTimer.swift` | タイマーのデータ（毎日繰り返す／1回のみ） |
+| `Shared/TimerStore.swift` | 端末内への保存（App GroupのUserDefaults。ウィジェットと共有） |
 | `IkiisogiTimer/Views/` | ホーム・タイマー編集・設定の各画面 |
+| `IkiisogiTimerWidget/` | ウィジェット |
 | `IkiisogiTimerTests/` | 計算ロジックのユニットテスト |
 
 ## ビルドとテスト
@@ -27,7 +28,7 @@ xcodebuild test -project IkiisogiTimer.xcodeproj -scheme IkiisogiTimer -destinat
 ## ロードマップ
 - [x] アプリアイコン（`swift Tools/generate-app-icon.swift` で再生成）
 - [x] サポート・プライバシーポリシーのページ（`docs/`、GitHub Pages）
-- [ ] ウィジェット（ホーム画面・ロック画面・StandBy）
+- [x] ウィジェット（ホーム画面 小・中、ロック画面 円形・長方形・1行、StandBy）
 - [ ] ライブアクティビティ／Dynamic Island
 - [ ] 通知・アラーム
 - [ ] 複数タイマー
