@@ -26,7 +26,7 @@ Common settings
 今日の残り時間は、あと何秒？
 
 **プロモーションテキスト**
-「あと4時間」ではなく「あと269分」。1日の残り時間を分か秒だけで表示して、今日という時間の貴重さを思い出させてくれるタイマーです。
+「あと4時間」ではなく「あと240分」。1日の残り時間を分か秒だけで表示して、今日という時間の貴重さを思い出させてくれるタイマーです。
 
 **説明**
 
@@ -67,7 +67,7 @@ Live in a Hurry
 Seconds left in your day
 
 **Promotional Text**
-Not “4 hours left.” Just “269 minutes left.” See the rest of your day in a single unit — minutes or seconds — and feel how precious it is.
+Not “4 hours left.” Just “240 minutes left.” See the rest of your day in a single unit — minutes or seconds — and feel how precious it is.
 
 **Description**
 
