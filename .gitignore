@@ -17,3 +17,7 @@ xcuserdata/
 *.ipa
 *.dSYM.zip
 *.dSYM
+
+# Release builds
+*.xcarchive
+export/

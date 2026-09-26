@@ -120,4 +120,5 @@ See the checklist in `README.md`. Live Activities can reuse the App Group and `S
 
 - Bundle IDs: `com.trtrbz21.IkiisogiTimer` and `com.trtrbz21.IkiisogiTimer.Widget` (still changeable until registered in App Store Connect). The App Group must be registered in the developer portal once a team is set.
 - Team ID: `CVLPBVN77V` (set on all targets, automatic signing).
+- Release builds: `Tools/release.sh` (export only) or `Tools/release.sh upload` (to App Store Connect / TestFlight). It archives unsigned and ad-hoc signs with the entitlements before exporting, because the team has no registered devices; a plain signed archive fails for lack of a development profile, and an unsigned archive loses the App Group. Verify with `codesign -d --entitlements -` on the IPA contents if signing changes.
 - Bump `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION` for each release, in both the app and widget targets (they must match).
