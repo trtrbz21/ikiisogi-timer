@@ -46,7 +46,7 @@ IkiisogiTimer/                 App target
     TimerEditView.swift        Edit title / repeat mode / deadline
     SettingsView.swift         Display unit, keep screen on, theme, links, version
   Assets.xcassets              AppIcon, AccentColor
-  InfoPlist.xcstrings          Localized home screen name (ja: 生き急ぎタイマー, en: Live in a Hurry)
+  InfoPlist.xcstrings          Localized home screen name (ja: 生き急ぎタイマー, en: Today Countdown)
   PrivacyInfo.xcprivacy        Privacy manifest (UserDefaults reason CA92.1)
 Shared/                        Compiled into BOTH the app and the widget extension
   Countdown.swift              Pure time math: deadline, reading (value + unit), progress
@@ -111,9 +111,8 @@ See the checklist in `README.md`. Live Activities can reuse the App Group and `S
 | Locale | Name | Subtitle |
 |---|---|---|
 | Japanese (primary) | 生き急ぎタイマー | 今日の残り時間は、あと何秒？ |
-| English | Live in a Hurry | Seconds left in your day |
+| English | Today Countdown | Seconds left in your day |
 
-- Fallback English name if taken: `Live in a Hurry: Minutes Left`.
 - Only publish the English store listing together with an English-localized app.
 - Seller name / privacy policy operator: Kazuki Watanabe. Support contact: kazuki.brbr@gmail.com.
 

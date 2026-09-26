@@ -66,7 +66,7 @@ https://trtrbz21.github.io/ikiisogi-timer/privacy.html
 ## English (U.S.)
 
 **Name**
-Live in a Hurry
+Today Countdown
 
 **Subtitle**
 Seconds left in your day
@@ -78,7 +78,7 @@ Not “4 hours left.” Just “240 minutes left.” See the rest of your day in
 
 When you think you still have a few hours, the day slips away.
 
-Live in a Hurry shows the time left until the end of your day in a single unit: “269 minutes left” or “16,140 seconds left.” Watching one big number count down is a quiet, constant reminder of how precious today is.
+Today Countdown shows the time left until the end of your day in a single unit: “269 minutes left” or “16,140 seconds left.” Watching one big number count down is a quiet, constant reminder of how precious today is.
 
 FEATURES
 • See the time left until the end of the day in minutes or seconds
