@@ -157,7 +157,9 @@ struct CountdownWidgetView: View {
             Text(entry.isFinished ? "終了" : "あと")
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            remaining
+            // One line: the unit can't be styled smaller than the number, so wrapping
+            // "46,276 seconds" onto two lines would make the unit as prominent as the number.
+            remaining()
                 .font(.system(size: 36, weight: .light))
             Spacer(minLength: 0)
             progressLine
@@ -177,7 +179,7 @@ struct CountdownWidgetView: View {
                 Text(entry.isFinished ? "終了" : "あと")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
-                remaining
+                remaining()
                     .font(.system(size: 44, weight: .light))
                 Spacer(minLength: 0)
                 Text(deadlineDescription)
@@ -195,9 +197,11 @@ struct CountdownWidgetView: View {
             AccessoryWidgetBackground()
             ring(lineWidth: 4)
                 .padding(3)
-            remaining
-                .font(.system(size: 12, weight: .medium))
-                .padding(.horizontal, 8)
+            // Up to two lines so a long English unit ("1,435 minutes") wraps instead of shrinking to nothing.
+            remaining(lineLimit: 2)
+                .font(.system(size: 16, weight: .semibold))
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 9)
         }
     }
 
@@ -235,8 +239,9 @@ struct CountdownWidgetView: View {
 
     /// "269分" / "16,140秒", updated live by the system. Minutes are rounded down and
     /// switch to seconds under one minute, matching `Countdown.reading` in the app.
-    @ViewBuilder
-    private var remaining: some View {
+    /// The unit can't be styled separately: the widget renderer only accepts the system's own
+    /// format styles, so a custom one that shrinks the unit fails to decode and shows a placeholder.
+    private func remaining(lineLimit: Int = 1) -> some View {
         Group {
             if entry.isFinished {
                 // Formatting the deadline against itself yields a localized "0分" / "0 minutes".
@@ -246,7 +251,7 @@ struct CountdownWidgetView: View {
             }
         }
         .monospacedDigit()
-        .lineLimit(1)
+        .lineLimit(lineLimit)
         .minimumScaleFactor(0.4)
     }
 
