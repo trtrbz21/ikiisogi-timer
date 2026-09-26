@@ -29,4 +29,8 @@ fi
 
 xcodebuild -exportArchive -archivePath "$ARCHIVE" -exportOptionsPlist "$OPTIONS" \
   -exportPath build/export -allowProvisioningUpdates -quiet
-echo "Done: $(ls build/export)"
+if [ "${1:-}" = upload ]; then
+  echo "Uploaded. Bump CURRENT_PROJECT_VERSION before the next upload (each build number can be uploaded only once)."
+else
+  echo "Exported: build/export/IkiisogiTimer.ipa"
+fi
