@@ -119,5 +119,5 @@ See the checklist in `README.md`. Live Activities can reuse the App Group and `S
 
 
 - Bundle IDs: `com.trtrbz21.IkiisogiTimer` and `com.trtrbz21.IkiisogiTimer.Widget` (still changeable until registered in App Store Connect). The App Group must be registered in the developer portal once a team is set.
-- `DEVELOPMENT_TEAM` is empty until the owner joins the Apple Developer Program.
+- Team ID: `CVLPBVN77V` (set on all targets, automatic signing).
 - Bump `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION` for each release, in both the app and widget targets (they must match).
