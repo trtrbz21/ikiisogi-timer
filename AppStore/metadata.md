@@ -3,6 +3,10 @@
 Drafts for App Store Connect. Character limits: name 30, subtitle 30, promotional text 170, keywords 100 (comma-separated, no spaces after commas), description 4000.
 Keywords leave out words already in the name or subtitle, since those are indexed for search anyway.
 
+Screenshots (6.9" iPhone, 1320×2868) are in `AppStore/screenshots/{ja,en}/`, in upload order:
+01 minutes (dark) → 02 seconds (navy) → 03 home screen widgets → 04 edit screen (light).
+Re-shoot the app screens with `AppStore/shoot.sh <ja|en> <name> <light|dark|navy> <minutes|seconds>`; the widgets shot is taken manually from the home screen.
+
 Common settings
 
 | Item | Value |
