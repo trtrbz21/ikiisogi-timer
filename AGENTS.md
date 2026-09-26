@@ -71,6 +71,7 @@ The Xcode project uses **file-system synchronized groups**: any file added under
 - App Group: `group.com.trtrbz21.IkiisogiTimer` (app and widget entitlements in `Config/`). `TimerStore()` uses it by default.
 - The app target defaults to `MainActor` isolation; the widget target does not. Code in `Shared/` must compile under both, so keep it free of UI-only APIs (`UIApplication` etc.).
 - The remaining-time text uses `Text(.currentDate, format: .offset(to:allowedFields:maxFieldCount:sign:))` (iOS 18), which the system updates every second. `[.minute, .second]` with `maxFieldCount: 1` reproduces the app's rules (floor, seconds under one minute). Do not replace it with `Text(timerInterval:)`, which shows `h:mm:ss`.
+- The unit ("minutes", "分") is always the same size as the number. A custom `DiscreteFormatStyle` that shrinks it compiles but the widget renderer can't decode it (`could not decode view … noType`), leaving a placeholder. Only system format styles work in live widget text.
 - Timeline entries exist only for the ring (every 5 minutes, 6 hours ahead) and for deadline rollovers. The linear progress uses `ProgressView(timerInterval:)` and is live.
 - Per-widget background (自動/白/黒/濃紺, home screen families only): the content gets a forced `colorScheme`, and the `containerBackground` color is set explicitly because the system draws it outside the content's environment.
 - Do not use `ProgressView(...).progressViewStyle(.circular)` for the ring; it renders a thick system gauge. The ring is drawn with `Circle().trim` like the app icon.
