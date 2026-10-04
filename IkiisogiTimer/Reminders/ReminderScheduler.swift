@@ -16,25 +16,23 @@ enum ReminderScheduler {
         }
     }
 
-    /// Replaces all pending reminders with ones matching the current timer and selection.
-    /// Call after the timer or the selection changes, and on launch.
-    static func reschedule(timer: CountdownTimer, minutes: Set<Int>, now: Date = .now) async {
+    /// Replaces the pending reminder with one matching the current timer and lead time.
+    /// Pass `nil` when reminders are off. Call after the timer or the setting changes, and on launch.
+    static func reschedule(timer: CountdownTimer, minutesLeft: Int?, now: Date = .now) async {
         let center = UNUserNotificationCenter.current()
         center.removeAllPendingNotificationRequests()
-        guard !minutes.isEmpty else { return }
+        guard let minutesLeft, ReminderPlan.allowedMinutes.contains(minutesLeft) else { return }
 
         let status = await center.notificationSettings().authorizationStatus
         guard status == .authorized || status == .provisional || status == .ephemeral else { return }
 
-        for plan in minutes.compactMap({ ReminderPlan.make(for: timer, minutesLeft: $0, now: now) }) {
-            let content = UNMutableNotificationContent()
-            content.title = timer.displayTitle
-            content.body = String(localized: "あと\(plan.minutesLeft)分")
-            content.sound = .default
+        guard let plan = ReminderPlan.make(for: timer, minutesLeft: minutesLeft, now: now) else { return }
+        let content = UNMutableNotificationContent()
+        content.title = timer.displayTitle
+        content.body = String(localized: "あと\(plan.minutesLeft)分")
+        content.sound = .default
 
-            let trigger = UNCalendarNotificationTrigger(dateMatching: plan.components, repeats: plan.repeats)
-            let request = UNNotificationRequest(identifier: "reminder.\(plan.minutesLeft)", content: content, trigger: trigger)
-            try? await center.add(request)
-        }
+        let trigger = UNCalendarNotificationTrigger(dateMatching: plan.components, repeats: plan.repeats)
+        try? await center.add(UNNotificationRequest(identifier: "reminder", content: content, trigger: trigger))
     }
 }

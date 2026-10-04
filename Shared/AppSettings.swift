@@ -5,8 +5,9 @@ enum SettingsKey {
     static let displayUnit = "settings.displayUnit"
     static let keepScreenOn = "settings.keepScreenOn"
     static let appearance = "settings.appearance"
-    /// Comma-separated lead times in minutes, see `ReminderSelection`.
-    static let reminders = "settings.reminders"
+    static let reminderEnabled = "settings.reminderEnabled"
+    /// Minutes left at which the reminder fires.
+    static let reminderMinutes = "settings.reminderMinutes"
 }
 
 /// Pages hosted with GitHub Pages from `docs/` (Japanese) and `docs/en/` (English).

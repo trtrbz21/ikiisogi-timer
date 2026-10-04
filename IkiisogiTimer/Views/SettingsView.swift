@@ -5,7 +5,9 @@ struct SettingsView: View {
     @AppStorage(SettingsKey.displayUnit) private var unit: DisplayUnit = .minutes
     @AppStorage(SettingsKey.keepScreenOn) private var keepScreenOn = false
     @AppStorage(SettingsKey.appearance) private var appearance: Appearance = .system
-    @AppStorage(SettingsKey.reminders) private var remindersRaw = ""
+    @AppStorage(SettingsKey.reminderEnabled) private var reminderEnabled = false
+    @AppStorage(SettingsKey.reminderMinutes) private var reminderMinutes = ReminderPlan.defaultMinutes
+    @FocusState private var isEditingReminderMinutes: Bool
     @State private var isShowingNotificationsOffAlert = false
 
     var body: some View {
@@ -33,13 +35,25 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    ForEach(ReminderPlan.options, id: \.self) { minutes in
-                        Toggle("残り\(minutes)分", isOn: reminderBinding(for: minutes))
+                    Toggle("残り時間を通知", isOn: reminderToggle)
+                    if reminderEnabled {
+                        LabeledContent("通知する残り時間") {
+                            HStack(spacing: 4) {
+                                TextField("60", value: $reminderMinutes, format: .number.grouping(.never))
+                                    .keyboardType(.numberPad)
+                                    .multilineTextAlignment(.trailing)
+                                    .monospacedDigit()
+                                    .frame(width: 64)
+                                    .focused($isEditingReminderMinutes)
+                                Text(DisplayUnit.minutes.shortLabel)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
                     }
                 } header: {
                     Text("通知")
                 } footer: {
-                    Text("締め時刻までの残り時間が、選んだ長さになったときに通知します。")
+                    Text("締め時刻までの残り時間が、設定した分数になったときに通知します。")
                 }
 
                 Section("このアプリについて") {
@@ -56,6 +70,18 @@ struct SettingsView: View {
                     Button("完了") { dismiss() }
                 }
             }
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("完了") { isEditingReminderMinutes = false }
+                }
+            }
+            // Keep the entered value within one day once editing ends.
+            .onChange(of: isEditingReminderMinutes) { _, isEditing in
+                if !isEditing {
+                    reminderMinutes = min(max(reminderMinutes, ReminderPlan.allowedMinutes.lowerBound), ReminderPlan.allowedMinutes.upperBound)
+                }
+            }
             .alert("通知が許可されていません", isPresented: $isShowingNotificationsOffAlert) {
                 Button("設定を開く") {
                     if let url = URL(string: UIApplication.openNotificationSettingsURLString) {
@@ -69,23 +95,18 @@ struct SettingsView: View {
         }
     }
 
-    /// Turning a reminder on asks for notification permission first; if it is refused, the toggle stays off.
-    private func reminderBinding(for minutes: Int) -> Binding<Bool> {
+    /// Turning the reminder on asks for notification permission first; if it is refused, the toggle stays off.
+    private var reminderToggle: Binding<Bool> {
         Binding {
-            ReminderSelection.decode(remindersRaw).contains(minutes)
+            reminderEnabled
         } set: { isOn in
-            var selection = ReminderSelection.decode(remindersRaw)
             guard isOn else {
-                selection.remove(minutes)
-                remindersRaw = ReminderSelection.encode(selection)
+                reminderEnabled = false
                 return
             }
             Task {
                 if await ReminderScheduler.requestAuthorization() {
-                    // Re-read after the await in case another toggle changed meanwhile.
-                    selection = ReminderSelection.decode(remindersRaw)
-                    selection.insert(minutes)
-                    remindersRaw = ReminderSelection.encode(selection)
+                    reminderEnabled = true
                 } else {
                     isShowingNotificationsOffAlert = true
                 }

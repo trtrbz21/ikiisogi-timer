@@ -102,11 +102,13 @@ struct CountdownTests {
         #expect(ReminderPlan.make(for: timer, minutesLeft: 180, now: date(25, 11, 0), calendar: calendar) == nil)
     }
 
-    @Test func reminderSelectionRoundTrips() {
-        #expect(ReminderSelection.decode("") == [])
-        #expect(ReminderSelection.decode("60,10") == [60, 10])
-        #expect(ReminderSelection.decode("60,7,abc") == [60])
-        #expect(ReminderSelection.encode([10, 180, 60]) == "180,60,10")
+    @Test func reminderAcceptsAnyLeadTimeUpToOneDay() {
+        let midnight = CountdownTimer(title: "", hour: 0, minute: 0)
+        #expect(ReminderPlan.make(for: midnight, minutesLeft: 45, now: date(25, 12, 0), calendar: calendar)?.components
+            == DateComponents(hour: 23, minute: 15))
+        #expect(ReminderPlan.make(for: midnight, minutesLeft: 1_440, now: date(25, 12, 0), calendar: calendar)?.components
+            == DateComponents(hour: 0, minute: 0))
+        #expect(ReminderPlan.allowedMinutes.contains(1) && !ReminderPlan.allowedMinutes.contains(0))
     }
 
     @Test func storePersistsTimers() {

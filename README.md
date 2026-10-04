@@ -30,7 +30,7 @@ xcodebuild test -project IkiisogiTimer.xcodeproj -scheme IkiisogiTimer -destinat
 - [x] サポート・プライバシーポリシーのページ（`docs/`、GitHub Pages）
 - [x] ウィジェット（ホーム画面 小・中、ロック画面 円形・長方形・1行、StandBy）
 - [ ] ライブアクティビティ／Dynamic Island
-- [x] 通知（残り180・60・30・10分）
+- [x] 通知（残り時間が設定した分数になったとき）
 - [ ] 複数タイマー
 - [x] 多言語対応（英語）
 - [ ] デザインテーマ

@@ -87,7 +87,7 @@ The Xcode project uses **file-system synchronized groups**: any file added under
 - **Once** timers count to a specific date and time and stay at "終了 0" after it passes.
 - Time zone always follows the device (`Calendar.autoupdatingCurrent`).
 - Appearance follows iOS by default; the user can force light, dark, or navy (濃紺, `Color.navy` #0E1A33, dark scheme) in Settings.
-- Reminders are local notifications at 180/60/30/10 minutes left, off by default; permission is requested when the first one is turned on. They are rescheduled from `IkiisogiTimerApp` whenever the timer, the selection, or the scene phase changes.
+- The reminder is one local notification at a user-entered number of minutes left (1–1440, default 60), off by default; permission is requested when it is turned on. It is rescheduled from `IkiisogiTimerApp` whenever the timer, the setting, or the scene phase changes. (Four fixed presets were tried and rejected by the owner as too many.)
 - Settings has a "レビューを書く" link (App Store ID 6816321575). No in-app feedback mail and no automatic review prompt (owner's decision).
 - Data is stored on device only. No accounts, no analytics, no network.
 - v1 has **no ads**. Ads and a remove-ads purchase (or a Pro unlock) come later.

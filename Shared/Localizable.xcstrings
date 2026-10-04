@@ -313,16 +313,6 @@
         }
       }
     },
-    "残り%lld分": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld min left"
-          }
-        }
-      }
-    },
     "残り時間": {
       "localizations": {
         "en": {
@@ -339,6 +329,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "You can also tap the number to switch. In minutes, the display switches to seconds automatically when less than a minute is left."
+          }
+        }
+      }
+    },
+    "残り時間を通知": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Time-Left Reminder"
           }
         }
       }
@@ -453,12 +453,12 @@
         }
       }
     },
-    "締め時刻までの残り時間が、選んだ長さになったときに通知します。": {
+    "締め時刻までの残り時間が、設定した分数になったときに通知します。": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Notifies you when the time left until your deadline reaches the lengths you choose."
+            "value": "Notifies you when the time left until your deadline reaches the number of minutes you set."
           }
         }
       }
@@ -579,6 +579,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Notifications Are Off"
+          }
+        }
+      }
+    },
+    "通知する残り時間": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remind Me At"
           }
         }
       }

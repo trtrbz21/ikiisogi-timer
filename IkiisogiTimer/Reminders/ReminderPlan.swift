@@ -2,8 +2,9 @@ import Foundation
 
 /// When a "N minutes left" reminder should fire for a timer. Pure so it can be unit tested.
 struct ReminderPlan: Equatable {
-    /// Lead times the user can choose from, in minutes.
-    static let options = [180, 60, 30, 10]
+    /// The lead time the user may enter, in minutes (up to one full day).
+    static let allowedMinutes = 1...1_440
+    static let defaultMinutes = 60
 
     let minutesLeft: Int
     /// Calendar components for the trigger: hour/minute for daily timers, a full date for one-time timers.
@@ -37,16 +38,5 @@ struct ReminderPlan: Equatable {
                 repeats: false
             )
         }
-    }
-}
-
-/// The chosen lead times, stored as a comma-separated string so it fits `@AppStorage`.
-enum ReminderSelection {
-    static func decode(_ raw: String) -> Set<Int> {
-        Set(raw.split(separator: ",").compactMap { Int($0) }).intersection(ReminderPlan.options)
-    }
-
-    static func encode(_ minutes: Set<Int>) -> String {
-        minutes.sorted(by: >).map(String.init).joined(separator: ",")
     }
 }
