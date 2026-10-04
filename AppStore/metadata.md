@@ -44,6 +44,7 @@ Common settings
 ・締め時刻は自由に設定。就寝時刻、終業時刻、締め切りなど、自分の区切りに合わせられます
 ・毎日繰り返すか、特定の日時まで1回だけ数えるかを選択
 ・数字をタップして分と秒を切り替え。残り1分を切ると自動で秒表示に
+・残り180分・60分・30分・10分になったら通知でお知らせ
 ・ホーム画面・ロック画面・StandByのウィジェット
 ・ライト／ダーク／濃紺のテーマ
 
@@ -51,6 +52,10 @@ Common settings
 ・広告なし
 ・アカウント登録は不要
 ・データはiPhoneの中にだけ保存され、外部には送信されません
+
+**このバージョンの新機能（1.1.0）**
+・通知に対応しました。残り時間が180分・60分・30分・10分になったらお知らせします（設定 → 通知）。
+・設定画面からApp Storeのレビューを書けるようになりました。
 
 **キーワード**
 カウントダウン,時間管理,ウィジェット,締め切り,一日,分,集中,習慣,生産性,時計,メメントモリ,就寝,ロック画面,自己啓発
@@ -85,6 +90,7 @@ FEATURES
 • Set any deadline you like: bedtime, the end of your workday, a due date
 • Repeat every day, or count down once to a specific date and time
 • Tap the number to switch units; it switches to seconds automatically in the last minute
+• Get notified when 180, 60, 30, or 10 minutes are left
 • Widgets for the Home Screen, Lock Screen, and StandBy
 • Light, Dark, and Navy themes
 
@@ -92,6 +98,10 @@ SIMPLE AND PRIVATE
 • No ads
 • No account required
 • Your data stays on your iPhone and is never sent anywhere
+
+**What's New (1.1.0)**
+• Notifications: get a reminder when 180, 60, 30, or 10 minutes are left (Settings > Notifications).
+• You can now write an App Store review from Settings.
 
 **Keywords**
 countdown,timer,time left,deadline,widget,minutes,productivity,focus,memento mori,clock,bedtime

@@ -5,6 +5,8 @@ struct SettingsView: View {
     @AppStorage(SettingsKey.displayUnit) private var unit: DisplayUnit = .minutes
     @AppStorage(SettingsKey.keepScreenOn) private var keepScreenOn = false
     @AppStorage(SettingsKey.appearance) private var appearance: Appearance = .system
+    @AppStorage(SettingsKey.reminders) private var remindersRaw = ""
+    @State private var isShowingNotificationsOffAlert = false
 
     var body: some View {
         NavigationStack {
@@ -30,7 +32,18 @@ struct SettingsView: View {
                     }
                 }
 
+                Section {
+                    ForEach(ReminderPlan.options, id: \.self) { minutes in
+                        Toggle("残り\(minutes)分", isOn: reminderBinding(for: minutes))
+                    }
+                } header: {
+                    Text("通知")
+                } footer: {
+                    Text("締め時刻までの残り時間が、選んだ長さになったときに通知します。")
+                }
+
                 Section("このアプリについて") {
+                    Link("レビューを書く", destination: AppLinks.writeReview)
                     Link("サポート", destination: AppLinks.support)
                     Link("プライバシーポリシー", destination: AppLinks.privacyPolicy)
                     LabeledContent("バージョン", value: appVersion)
@@ -41,6 +54,40 @@ struct SettingsView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("完了") { dismiss() }
+                }
+            }
+            .alert("通知が許可されていません", isPresented: $isShowingNotificationsOffAlert) {
+                Button("設定を開く") {
+                    if let url = URL(string: UIApplication.openNotificationSettingsURLString) {
+                        UIApplication.shared.open(url)
+                    }
+                }
+                Button("キャンセル", role: .cancel) {}
+            } message: {
+                Text("iPhoneの設定で、このアプリの通知を許可してください。")
+            }
+        }
+    }
+
+    /// Turning a reminder on asks for notification permission first; if it is refused, the toggle stays off.
+    private func reminderBinding(for minutes: Int) -> Binding<Bool> {
+        Binding {
+            ReminderSelection.decode(remindersRaw).contains(minutes)
+        } set: { isOn in
+            var selection = ReminderSelection.decode(remindersRaw)
+            guard isOn else {
+                selection.remove(minutes)
+                remindersRaw = ReminderSelection.encode(selection)
+                return
+            }
+            Task {
+                if await ReminderScheduler.requestAuthorization() {
+                    // Re-read after the await in case another toggle changed meanwhile.
+                    selection = ReminderSelection.decode(remindersRaw)
+                    selection.insert(minutes)
+                    remindersRaw = ReminderSelection.encode(selection)
+                } else {
+                    isShowingNotificationsOffAlert = true
                 }
             }
         }

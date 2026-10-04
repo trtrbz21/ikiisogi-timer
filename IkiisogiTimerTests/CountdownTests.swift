@@ -78,6 +78,37 @@ struct CountdownTests {
         #expect(custom.displayTitle == "締め切り")
     }
 
+    @Test func dailyReminderFiresBeforeDeadlineAndWrapsMidnight() {
+        let midnight = CountdownTimer(title: "", hour: 0, minute: 0)
+        #expect(ReminderPlan.make(for: midnight, minutesLeft: 60, now: date(25, 12, 0), calendar: calendar)
+            == ReminderPlan(minutesLeft: 60, components: DateComponents(hour: 23, minute: 0), repeats: true))
+
+        let lateNight = CountdownTimer(title: "", hour: 0, minute: 30)
+        #expect(ReminderPlan.make(for: lateNight, minutesLeft: 180, now: date(25, 12, 0), calendar: calendar)?.components
+            == DateComponents(hour: 21, minute: 30))
+
+        let evening = CountdownTimer(title: "", hour: 18, minute: 5)
+        #expect(ReminderPlan.make(for: evening, minutesLeft: 10, now: date(25, 12, 0), calendar: calendar)?.components
+            == DateComponents(hour: 17, minute: 55))
+    }
+
+    @Test func onceReminderSkipsPastTimes() {
+        let timer = CountdownTimer(title: "", repeatMode: .once, onceDate: date(25, 12, 0))
+        let plan = ReminderPlan.make(for: timer, minutesLeft: 30, now: date(25, 11, 0), calendar: calendar)
+        #expect(plan?.repeats == false)
+        #expect(plan?.components == DateComponents(year: 2026, month: 9, day: 25, hour: 11, minute: 30))
+        // 60 minutes before noon is exactly now, 180 minutes before is in the past.
+        #expect(ReminderPlan.make(for: timer, minutesLeft: 60, now: date(25, 11, 0), calendar: calendar) == nil)
+        #expect(ReminderPlan.make(for: timer, minutesLeft: 180, now: date(25, 11, 0), calendar: calendar) == nil)
+    }
+
+    @Test func reminderSelectionRoundTrips() {
+        #expect(ReminderSelection.decode("") == [])
+        #expect(ReminderSelection.decode("60,10") == [60, 10])
+        #expect(ReminderSelection.decode("60,7,abc") == [60])
+        #expect(ReminderSelection.encode([10, 180, 60]) == "180,60,10")
+    }
+
     @Test func storePersistsTimers() {
         let defaults = UserDefaults(suiteName: #function)!
         defaults.removePersistentDomain(forName: #function)

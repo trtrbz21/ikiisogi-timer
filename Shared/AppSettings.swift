@@ -5,6 +5,8 @@ enum SettingsKey {
     static let displayUnit = "settings.displayUnit"
     static let keepScreenOn = "settings.keepScreenOn"
     static let appearance = "settings.appearance"
+    /// Comma-separated lead times in minutes, see `ReminderSelection`.
+    static let reminders = "settings.reminders"
 }
 
 /// Pages hosted with GitHub Pages from `docs/` (Japanese) and `docs/en/` (English).
@@ -17,6 +19,8 @@ enum AppLinks {
 
     static var support: URL { URL(string: base)! }
     static var privacyPolicy: URL { URL(string: base + "privacy.html")! }
+    /// Opens the App Store's review sheet for this app.
+    static let writeReview = URL(string: "https://apps.apple.com/app/id6816321575?action=write-review")!
 }
 
 extension Color {

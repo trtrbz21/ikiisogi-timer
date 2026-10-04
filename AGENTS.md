@@ -4,7 +4,7 @@ Guidance for AI coding agents (and humans) working on this repository.
 
 ## Product
 
-**生き急ぎタイマー** (working English name TBD) — an iPhone app that shows the time left until the end of the day (or a user-set deadline) in a single unit only: "あと269分" or "あと16,140秒". The point is to make time feel scarce; never show mixed units like "4時間29分".
+**生き急ぎタイマー** (English store name: Today Countdown) — an iPhone app that shows the time left until the end of the day (or a user-set deadline) in a single unit only: "あと269分" or "あと16,140秒". The point is to make time feel scarce; never show mixed units like "4時間29分".
 
 The owner communicates in Japanese. Write user-facing strings and explanations to the owner in Japanese; code, comments, and commit messages in English.
 
@@ -44,7 +44,10 @@ IkiisogiTimer/                 App target
   Views/
     HomeView.swift             Main countdown screen (CountdownFace, ProgressLine)
     TimerEditView.swift        Edit title / repeat mode / deadline
-    SettingsView.swift         Display unit, keep screen on, theme, links, version
+    SettingsView.swift         Display unit, keep screen on, theme, reminders, review link, version
+  Reminders/
+    ReminderPlan.swift         Pure: when an "N minutes left" reminder fires (daily wraps midnight, once skips past)
+    ReminderScheduler.swift    Local notifications via UNUserNotificationCenter (permission + reschedule)
   Assets.xcassets              AppIcon, AccentColor
   InfoPlist.xcstrings          Localized home screen name (ja: 生き急ぎタイマー, en: Today Countdown)
   PrivacyInfo.xcprivacy        Privacy manifest (UserDefaults reason CA92.1)
@@ -84,6 +87,8 @@ The Xcode project uses **file-system synchronized groups**: any file added under
 - **Once** timers count to a specific date and time and stay at "終了 0" after it passes.
 - Time zone always follows the device (`Calendar.autoupdatingCurrent`).
 - Appearance follows iOS by default; the user can force light, dark, or navy (濃紺, `Color.navy` #0E1A33, dark scheme) in Settings.
+- Reminders are local notifications at 180/60/30/10 minutes left, off by default; permission is requested when the first one is turned on. They are rescheduled from `IkiisogiTimerApp` whenever the timer, the selection, or the scene phase changes.
+- Settings has a "レビューを書く" link (App Store ID 6816321575). No in-app feedback mail and no automatic review prompt (owner's decision).
 - Data is stored on device only. No accounts, no analytics, no network.
 - v1 has **no ads**. Ads and a remove-ads purchase (or a Pro unlock) come later.
 
